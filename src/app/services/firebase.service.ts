@@ -1,60 +1,52 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import * as firebase from 'firebase';
+
 
 @Injectable()
 export class FirebaseService {
 
-
   listings: FirebaseListObservable<any[]>;
-  constructor(private af: AngularFireDatabase) { }
+  listing: FirebaseObjectObservable<any>;
+  folder: any;
+
+  constructor(private af: AngularFireDatabase) {
+    this.folder = 'listingimages';
+    this.listings = this.af.list('/listings') as FirebaseListObservable<Listing[]>;
+  }
 
   getListings() {
-    this.listings = this.af.list('/listings') as FirebaseListObservable<Listing[]>;
     return this.listings;
   }
 
+  getListingDetails(id) {
+    this.listing = this.af.object('/listings/' + id) as FirebaseObjectObservable<Listing>
+    return this.listing;
+  }
+
+  addListing(listing) {
+    // Create root ref
+    let storageRef = firebase.storage().ref();
+    for (let selectedFile of [(<HTMLInputElement>document.getElementById('image')).files[0]]) {
+      let path = `/${this.folder}/${selectedFile.name}`;
+      let iRef = storageRef.child(path);
+      iRef.put(selectedFile).then((snapshot) => {
+        listing.image = selectedFile.name;
+        listing.path = path;
+        return this.listings.push(listing);
+      });
+    }
+  }
+  updateListing(id, listing) {
+    return this.listings.update(id, listing);
+  }
+
+  deleteListing(id) {
+    return this.listings.remove(id);
+  }
+
 
 }
-export class AuthService {
-  user: Observable<firebase.User>;
-  constructor(private firebaseAuth: AngularFireAuth) {
-    this.user = firebaseAuth.authState;
-  }
-  signup(email: string, password: string) {
-    this.firebaseAuth
-      .auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Success!', value);
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
-  }
-
-  login(email: string, password: string) {
-    this.firebaseAuth
-      .auth
-      .signInWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Nice, it worked!');
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
-  }
-
-  logout() {
-    this.firebaseAuth
-      .auth
-      .signOut();
-  }
-
-}
-
 
 interface Listing {
   $key?: string;

@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Proplistings</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+              aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -10,10 +11,10 @@
             <a class="nav-link" [routerLink]="['/']">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/listings']">Listings</a>
+            <a class="nav-link"  [routerLink]="['/listings']">Listings</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/add-listing']">Add Listings</a>
+            <a class="nav-link"  [routerLink]="['/add-listing']">Add Listings</a>
           </li>
         </ul>
         <ul class="navbar-nav navbar-right">
@@ -26,23 +27,4 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form> -->
       </div>
-
-  <h1 *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.email }}!</h1>
-
-  <div *ngIf="!(authService.user | async)">
-    <input type="text"  placeholder="email">
-    <input type="password"  placeholder="password">
-
-    <button (click)="signup()" [disabled]="!email || !password">
-      Signup
-    </button>
-
-    <button (click)="login()" [disabled]="!email || !password">
-      Login
-    </button>
-  </div>
-
-  <button (click)="logout()" *ngIf="authService.user | async">
-    Logout
-  </button>
-    </nav>
+</nav>

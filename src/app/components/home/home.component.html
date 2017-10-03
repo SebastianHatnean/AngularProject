@@ -1,7 +1,44 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- Bootstrap core CSS -->
+<!--
+  <link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">
+-->
+
+  <!-- Custom styles for this template -->
+
+</head>
+<body>
 <div class="jumbotron text-center">
 	<div class="container">
 		<h1>Property Listings</h1>
 		<p>Access the properties</p>
-		<a href=""><img src="assets/img/google.png"></a>
+		<!--<a href=""><img src="assets/img/google.png"></a>-->
+    <h2 class="form-signin-heading">Sign in</h2>
+    <h1 *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.email }}!</h1>
+
+    <div *ngIf="!(authService.user | async)">
+      <input  type="text" [(ngModel)]="email" placeholder="Email address">
+      <br>
+      <input type="password" [(ngModel)]="password" placeholder="Password">
+      <br>
+      <button class=" btn-lg btn-primary btn-block " (click)="signup()" [disabled]="!email || !password">
+        Signup
+      </button>
+      <br>
+      <button (click)="login()" [disabled]="!email || !password">
+        Login
+      </button>
+    </div>
+    <br>
+    <button (click)="logout()" *ngIf="authService.user | async">
+      Logout
+    </button>
 	</div>
 </div>
+</body>
+</html>

@@ -2,9 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes} from '@angular/router';
 import { AngularFireModule} from 'angularfire2';
-import {AuthService, FirebaseService} from './services/firebase.service';
+import { FirebaseService } from './services/firebase.service';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from './auth.service';
+import { FlashMessagesModule} from 'angular2-flash-messages';
+
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -33,7 +37,9 @@ export const environment = {
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'listings', component: ListingsComponent },
-  { path: 'add-listing', component: AddListingComponent }
+  { path: 'listing/:id', component: ListingComponent },
+  { path: 'add-listing', component: AddListingComponent },
+  { path: 'edit-listing/:id', component: EditListingComponent }
 ];
 @NgModule({
   declarations: [
@@ -50,7 +56,9 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    FormsModule,
+    FlashMessagesModule
   ],
   providers: [FirebaseService, AuthService],
   bootstrap: [AppComponent]

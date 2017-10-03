@@ -7,8 +7,6 @@ import { FirebaseService } from '../../services/firebase.service';
   styleUrls: ['./listings.component.css']
 })
 export class ListingsComponent implements OnInit {
-
-
   listings: any;
 
   constructor(private firebaseService: FirebaseService) { }
